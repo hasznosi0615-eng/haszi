@@ -1,0 +1,129 @@
+/* ==UserStyle==
+@name           Saját YouTube téma (mobil)
+@namespace      haszi.youtube-tema
+@version        1.0.0
+@description    Shorts elrejtése és saját színek a mobilos YouTube-on (m.youtube.com), Firefox + Stylus.
+@license        MIT
+@preprocessor   default
+
+@var color hatter     "Háttérszín"          #0d1117
+@var color felulet    "Sávok színe (fent/lent)" #161b22
+@var color kartya     "Kártyák, gombok háttere" #21262d
+@var color szoveg     "Fő szövegszín"       #e6edf3
+@var color halvany    "Halvány szöveg"      #8b949e
+@var color kiemelo    "Kiemelő szín"        #2dd4bf
+==/UserStyle== */
+
+@-moz-document domain("m.youtube.com") {
+
+  /* ---------- Színek ---------- */
+  :root {
+    --sajat-hatter: /*[[hatter]]*/;
+    --sajat-felulet: /*[[felulet]]*/;
+    --sajat-kartya: /*[[kartya]]*/;
+    --sajat-szoveg: /*[[szoveg]]*/;
+    --sajat-halvany: /*[[halvany]]*/;
+    --sajat-kiemelo: /*[[kiemelo]]*/;
+  }
+
+  html, html[darker-dark-theme], html[dark], body, ytm-app,
+  ytm-browse, ytm-search, ytm-watch, .page-container,
+  ytm-single-column-browse-results-renderer, ytm-section-list-renderer,
+  ytm-item-section-renderer, ytm-rich-grid-renderer,
+  ytm-single-column-watch-next-results-renderer, ytm-slim-video-metadata-section-renderer {
+    background-color: var(--sajat-hatter) !important;
+  }
+
+  html, body, ytm-app { color: var(--sajat-szoveg) !important; }
+
+  /* Felső sáv, alsó navigáció, keresés-szűrők sávja */
+  ytm-mobile-topbar-renderer, .mobile-topbar-header,
+  ytm-pivot-bar-renderer, ytm-search-sub-menu-renderer,
+  ytm-feed-filter-chip-bar-renderer, ytm-chip-cloud-renderer,
+  .header-bar, .sticky-player .player-container + div {
+    background-color: var(--sajat-felulet) !important;
+  }
+  ytm-pivot-bar-renderer { border-top: 1px solid var(--sajat-kartya) !important; }
+
+  /* Címek és halvány szövegek */
+  .media-item-headline, .media-item-headline span, h3, h2,
+  .slim-video-information-title, .shortsLockupViewModelHostMetadataTitle {
+    color: var(--sajat-szoveg) !important;
+  }
+  .media-item-byline, .media-item-byline span, ytm-badge-and-byline-renderer,
+  ytm-badge-and-byline-renderer span, .ytm-badge-and-byline-item-byline,
+  .secondary-text, .slim-video-information-subtitle {
+    color: var(--sajat-halvany) !important;
+  }
+
+  /* Bélyegképek kerekítése, finom keret */
+  ytm-thumbnail-cover, .video-thumbnail-container-large, yt-thumbnail-view-model {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+  }
+
+  /* Kártyák, gombok, keresőmező */
+  yt-searchbox, .searchbox-input, ytm-search-box input,
+  .ytSearchboxComponentInputBox, .yt-spec-button-shape-next--tonal,
+  ytm-chip-cloud-chip-renderer:not([chip-style*="ACTIVE"]) .chip-container,
+  yt-chip-cloud-chip-renderer, yt-video-metadata-carousel-view-model,
+  button.ytSpecButtonShapeNextTonal {
+    background-color: var(--sajat-kartya) !important;
+    color: var(--sajat-szoveg) !important;
+  }
+
+  /* Kiemelő szín: kijelölt fül, aktív szűrő, feliratkozás gomb, linkek */
+  .pivot-bar-item-tab[aria-selected="true"], .pivot-bar-item-tab[aria-selected="true"] * {
+    color: var(--sajat-kiemelo) !important;
+    fill: var(--sajat-kiemelo) !important;
+  }
+  ytm-chip-cloud-chip-renderer[chip-style*="ACTIVE"] .chip-container,
+  .yt-spec-button-shape-next--call-to-action.yt-spec-button-shape-next--filled,
+  ytm-subscribe-button-renderer .yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled,
+  button.ytSpecButtonShapeNextFilled.ytSpecButtonShapeNextMono,
+  button.ytSpecButtonShapeNextFilled.ytSpecButtonShapeNextCallToAction {
+    background-color: var(--sajat-kiemelo) !important;
+    color: var(--sajat-hatter) !important;
+  }
+  a.yt-core-attributed-string__link, .yt-core-attributed-string--link-inherit-color a {
+    color: var(--sajat-kiemelo) !important;
+  }
+
+  /* Lejátszó: haladásjelző és fogantyú */
+  .ytProgressBarLineProgressBarPlayed, .ytm-progress-bar-played,
+  .ytp-play-progress, .ytp-swatch-background-color,
+  .ytProgressBarPlayheadProgressBarPlayheadDot, .ytm-progress-bar-playhead-dot {
+    background: var(--sajat-kiemelo) !important;
+  }
+  ytm-thumbnail-overlay-resume-playback-renderer .thumbnail-overlay-resume-playback-progress {
+    background-color: var(--sajat-kiemelo) !important;
+  }
+
+  /* Időtartam címke a bélyegképen */
+  ytm-thumbnail-overlay-time-status-renderer, .badge-shape-wiz--thumbnail-default {
+    border-radius: 6px !important;
+  }
+
+  /* Szövegkijelölés */
+  ::selection { background: var(--sajat-kiemelo); color: var(--sajat-hatter); }
+}
+
+@-moz-document domain("m.youtube.com") {
+  /* ---------- Shorts elrejtése ---------- */
+  /* Shorts sorok (kezdőlap, keresés, csatornák) */
+  ytm-reel-shelf-renderer,
+  grid-shelf-view-model:has(ytm-shorts-lockup-view-model),
+  ytm-rich-section-renderer:has(ytm-reel-shelf-renderer, ytm-shorts-lockup-view-model),
+  ytm-item-section-renderer:has(> lazy-list > grid-shelf-view-model ytm-shorts-lockup-view-model):not(:has(ytm-video-with-context-renderer)),
+  ytm-rich-item-renderer:has(ytm-shorts-lockup-view-model, a[href^="/shorts/"]),
+  ytm-video-with-context-renderer:has(a[href^="/shorts/"]),
+  ytm-shorts-lockup-view-model {
+    display: none !important;
+  }
+  /* Shorts gomb az alsó navigációban */
+  ytm-pivot-bar-item-renderer:has(.pivot-shorts) { display: none !important; }
+  /* Shorts fül a csatornaoldalakon */
+  yt-tab-shape[tab-title="Shorts"], .single-column-browse-results-tabs > a[href$="/shorts"] {
+    display: none !important;
+  }
+}
